@@ -3,7 +3,12 @@
 #include <iostream>
 #include <conio.h>
 #include <time.h>
-
+#include <fstream>
+#include <string>
+#include <iomanip>
+#include <sstream>
+#include <windows.h>
+#include <MMSystem.h>
 #include "ConsoleGaming.h"
 
 using namespace std;
@@ -15,17 +20,30 @@ typedef vector<GameObject>::const_iterator const_iterator;
 
 // Window constants
 const int WindowWidth = 70;
-const int WindowHeight = 30;
+const int WindowHeight = 20;
 // Snake
 const int SnakeSpeed = 1;
 const int SnakeStartingLength = 5;
-const char SnakeSymbol = '*',
-	//Fruit
-		FruitSymbol = '+';
+const char SnakeSymbol = '*';
+const char EmptySymbol = '\000';
+int counter = 0;
+int counterForWall = 0;
+
 // Game variables
-unsigned long sleepDuration = 200;
+unsigned long sleepDuration = 100;
 vector<GameObject> snake;
 vector<GameObject> fruit;
+vector<GameObject> oldSnake;
+vector<GameObject> fastFruit;
+vector<GameObject> slowFruit;
+vector<GameObject> wall;
+char fruits[] = { '+', '\003', '\254', '\001', '\014', '\223' };
+
+int choice = 0;
+void die();
+void playAgain();
+void mainMenu();
+int result = 0;
 
 COORD direction = { 1, 0 };
 
