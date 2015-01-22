@@ -103,28 +103,67 @@ void Draw()
 	}
 
 }
+void mainMenu() {
 
+	ClearScreen(consoleHandle);
+	system("color 1a");
+	cout << char(201);
+	for (int i = 1; i <= 17; i++){
+		cout << char(205);
+	}
+	cout << char(187);
+	cout << "\n";
+	cout << char(186) << " Main Menu" << setw(8) << char(186) << "\n";
+	cout << char(186) << " 1 - Start game" << setw(3) << char(186) << "\n";
+	cout << char(186) << " 2 - Instructions" << setw(1) << char(186) << "\n";
+	cout << char(186) << " 3 - Quit" << setw(9) << char(186) << "\n";
+	cout << char(186) << " Please choose:" << setw(3) << char(186) << "\n";;
+	cout << char(200);
+	for (int i = 1; i <= 17; i++){
+		cout << char(205);
+	}
+	cout << char(188);
+	cin >> choice;
+	if (choice == 1)
+	{
+		startGame();
+	}
+
+	if (choice == 2)
+	{
+		ClearScreen(consoleHandle);
+		cout << "Hi!," << endl << "Welcome to Snake,";
+		cout << "You may navigate the snake using the keys: " << endl;
+		cout << "W-UP\nS-DOWN\nD-RIGHT\nA-LEFT\nM - Go to the Main Menu\n";
+		cout << "Power-ups:" << endl;
+		cout << "\031-speed++\n\030-speed--\nx-fuck you\n" << endl;
+		cout << "Press m to go to the main menu ";
+		char button;
+		cin >> button;
+		switch (button){
+
+		case 'm':
+			mainMenu();
+			break;
+		};
+	}
+	if (choice == 3)
+	{
+		exit(1);
+	}
+
+}
 int main()
 {
-	consoleHandle = GetStdHandle( STD_OUTPUT_HANDLE );
+	PlaySound(TEXT("panther.wav"), NULL, SND_ASYNC | SND_FILENAME | SND_LOOP);
+	consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	// Randomize stuff
 	srand(time(NULL));
-
-	for (int i = SnakeStartingLength; i > -1; --i)
-	{
-		snake.push_back(GameObject(i, 0, SnakeSymbol));
-	}
-
+	
 	int x = rand() % WindowWidth;
 	int y = rand() % WindowHeight;
-	fruit.push_back(GameObject(x, y, FruitSymbol));
-
-	while (true)
-	{
-		Update();
-		Draw();
-		Sleep(sleepDuration);
-	}
+	fruit.push_back(GameObject(x, y, '+'));
+	mainMenu();
 
 	return 0;
 }
