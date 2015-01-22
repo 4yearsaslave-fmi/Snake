@@ -47,74 +47,6 @@ int result = 0;
 
 COORD direction = { 1, 0 };
 
-void drawFrame(){
-	for (int i = 0; i < 70; i++)
-	{
-		cout << 'x';
-	}
-	cout << endl;
-	for (int i = 20; i > -1; --i)
-	{
-		cout << 'x' << setw(69) << 'x' << endl;
-	}
-	for (int i = 0; i < 70; i++)
-	{
-		cout << 'x';
-	}
-}
-
-void startGame(){
-	ClearScreen(consoleHandle);
-	slowFruit.clear();
-	fastFruit.clear();
-	wall.clear();
-	sleepDuration = 100;
-	direction = { 1, 0 };
-	drawFrame();
-	snake.clear();
-	for (int i = SnakeStartingLength; i > -1; --i)
-	{
-		snake.push_back(GameObject(i + 1, 1, SnakeSymbol));
-	}
-	snake.begin()->Coordinates.X = 6;
-	snake.begin()->Coordinates.Y = 1;
-
-	while (true)
-	{
-		Update();
-		Draw();
-		Sleep(sleepDuration);
-	}
-}
-void die(){
-	ClearScreen(consoleHandle);
-	cout << "Your result is: " << result << endl;
-	result = 0;
-
-	playAgain();
-}
-
-void playAgain(){
-	char input;
-	cout << "Do you want to play again?" << '\t' << "Y / N" << '\t';
-	cout << "Press M to go back to the menu.";
-	cin >> input;
-
-	switch (input)
-	{
-	case 'y':
-		startGame();
-		break;
-	case 'n':
-		exit(0);
-		break;
-	case 'm':
-		mainMenu();
-		break;
-	
-	};
-
-}
 void Update()
 {
 	// Save the tail, we might need it later.
@@ -303,6 +235,47 @@ void Draw()
 	}
 
 }
+
+void drawFrame(){
+	for (int i = 0; i < 70; i++)
+	{
+		cout << 'x';
+	}
+	cout << endl;
+	for (int i = 20; i > -1; --i)
+	{
+		cout << 'x' << setw(69) << 'x' << endl;
+	}
+	for (int i = 0; i < 70; i++)
+	{
+		cout << 'x';
+	}
+}
+
+void startGame(){
+	ClearScreen(consoleHandle);
+	slowFruit.clear();
+	fastFruit.clear();
+	wall.clear();
+	sleepDuration = 100;
+	direction = { 1, 0 };
+	drawFrame();
+	snake.clear();
+	for (int i = SnakeStartingLength; i > -1; --i)
+	{
+		snake.push_back(GameObject(i + 1, 1, SnakeSymbol));
+	}
+	snake.begin()->Coordinates.X = 6;
+	snake.begin()->Coordinates.Y = 1;
+
+	while (true)
+	{
+		Update();
+		Draw();
+		Sleep(sleepDuration);
+	}
+}
+
 void mainMenu() {
 
 	ClearScreen(consoleHandle);
@@ -353,6 +326,37 @@ void mainMenu() {
 	}
 
 }
+
+void die(){
+	ClearScreen(consoleHandle);
+	cout << "Your result is: " << result << endl;
+	result = 0;
+
+	playAgain();
+}
+
+void playAgain(){
+	char input;
+	cout << "Do you want to play again?" << '\t' << "Y / N" << '\t';
+	cout << "Press M to go back to the menu.";
+	cin >> input;
+
+	switch (input)
+	{
+	case 'y':
+		startGame();
+		break;
+	case 'n':
+		exit(0);
+		break;
+	case 'm':
+		mainMenu();
+		break;
+	
+	};
+
+}
+
 int main()
 {
 	PlaySound(TEXT("panther.wav"), NULL, SND_ASYNC | SND_FILENAME | SND_LOOP);
@@ -367,3 +371,8 @@ int main()
 
 	return 0;
 }
+
+
+
+
+
