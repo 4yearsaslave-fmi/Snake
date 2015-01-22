@@ -270,7 +270,15 @@ void Update()
 
 void Draw()
 {
-	ClearScreen(consoleHandle);
+	for (int i = 0; i < oldSnake.size(); i++)
+	{
+		oldSnake.at(i).Symbol = EmptySymbol;
+	}
+
+	for (const_iterator snakeBody = oldSnake.begin(); snakeBody != oldSnake.end(); ++snakeBody)
+	{
+		snakeBody->Draw(consoleHandle);
+	}
 
 	for (const_iterator snakeBody = snake.begin(); snakeBody != snake.end(); ++snakeBody)
 	{
@@ -280,6 +288,18 @@ void Draw()
 	for (const_iterator singleFruit = fruit.begin(); singleFruit != fruit.end(); ++singleFruit)
 	{
 		singleFruit->Draw(consoleHandle);
+	}
+	for (const_iterator fast = fastFruit.begin(); fast != fastFruit.end(); ++fast)
+	{
+		fast->Draw(consoleHandle);
+	}
+	for (const_iterator slow = slowFruit.begin(); slow != slowFruit.end(); ++slow)
+	{
+		slow->Draw(consoleHandle);
+	}
+	for (const_iterator w = wall.begin(); w != wall.end(); ++w)
+	{
+		w->Draw(consoleHandle);
 	}
 
 }
