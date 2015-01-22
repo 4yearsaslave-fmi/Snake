@@ -120,15 +120,16 @@ void Update()
 	// Save the tail, we might need it later.
 	GameObject tail = *(snake.end() - 1);
 
+	oldSnake = snake;
+	
 	for (randomAccess_iterator i = snake.end() - 1; i != snake.begin(); --i)
 	{
 		GameObject next = *(i - 1);
 		i->UpdateCoordinates(next.Coordinates);
 	}
-
-	if (kbhit())
+	if (_kbhit())
 	{
-		char key = getch();
+		char key = _getch();
 		switch (key)
 		{
 		case 'a':
@@ -147,30 +148,123 @@ void Update()
 			direction.X = 0;
 			direction.Y = SnakeSpeed;
 			break;
+		case 'm':
+			mainMenu();
+			break;
 		};
 	}
 
+	system("color 2a");
 	snake.begin()->Coordinates.X += direction.X;
 	snake.begin()->Coordinates.Y += direction.Y;
-
+	
 	GameObject head = *snake.begin();
 	for (randomAccess_iterator i = fruit.begin(); i != fruit.end(); ++i)
 	{
 		if (head.Coordinates.X == i->Coordinates.X && head.Coordinates.Y == i->Coordinates.Y)
 		{
 			// Remove the old fruit, increase the snake's size
+			counter++;
+			counterForWall++;
 			fruit.erase(i);
 			snake.push_back(tail);
 
 			// Add a new fruit
-			int x = rand() % WindowWidth;
-			int y = rand() % WindowHeight;
-			fruit.push_back(GameObject(x, y, FruitSymbol));
+			int x;
+			int y;
+			x = (rand() % (WindowWidth - 3)) + 1;
+			y = (rand() % (WindowHeight - 2)) + 2;
+
+			int random = rand() % 5;
+
+			fruit.push_back(GameObject(x, y, fruits[random]));
+
 
 			sleepDuration *= (sleepDuration > 50) * 0.1 + 0.9;
+
+			result++;
 			// Break, since you can't eat more than one fruit at the same time.
 			break;
+
 		}
+		if (counter == 3)
+		{
+			int x1;
+			int y1;
+			x1 = (rand() % (WindowWidth - 3)) + 1;
+			y1 = (rand() % (WindowHeight - 2)) + 1;
+			int fastOrSlow = (rand() % 2);
+			if (fastOrSlow == 1)
+			{
+				fastFruit.push_back(GameObject(x1, y1, '\30'));
+			}
+			else
+			{
+				slowFruit.push_back(GameObject(x1, y1, '\31'));
+			}
+			counter = 0;
+		}
+		if (counterForWall == 4)
+		{
+			int x1;
+			int y1;
+			x1 = (rand() % (WindowWidth - 3)) + 1;
+			y1 = (rand() % (WindowHeight - 2)) + 1;
+			wall.push_back(GameObject(x1, y1, 'x'));
+
+			counterForWall = 0;
+		}
+		for (randomAccess_iterator l = wall.begin(); l != wall.end(); ++l)
+		{
+			if (head.Coordinates.X == l->Coordinates.X &&
+				head.Coordinates.Y == l->Coordinates.Y)
+			{
+				die();
+			}
+		}
+		for (randomAccess_iterator j = slowFruit.begin(); j != slowFruit.end(); ++j)
+		{
+			if (head.Coordinates.X == j->Coordinates.X &&
+				head.Coordinates.Y == j->Coordinates.Y)
+			{
+				sleepDuration += 15;
+				slowFruit.clear();
+				break;
+			}
+		}
+		for (randomAccess_iterator k = fastFruit.begin(); k != fastFruit.end(); ++k)
+		{
+			if (head.Coordinates.X == k->Coordinates.X &&
+				head.Coordinates.Y == k->Coordinates.Y)
+			{
+				if (sleepDuration > 15)
+				{
+					sleepDuration -= 15;
+				}
+				fastFruit.clear();
+				break;
+
+			}
+		}
+
+		for (int j = 1; j < snake.size(); j++)
+		{
+			GameObject current = snake.at(j);
+			if (head.Coordinates.X == current.Coordinates.X &&
+				head.Coordinates.Y == current.Coordinates.Y)
+			{
+				die();
+			}
+			if (head.Coordinates.X == 0 ||
+				head.Coordinates.Y == 0 ||
+				head.Coordinates.X == 69 ||
+				head.Coordinates.Y == 22)
+			{
+				die();
+			}
+		}
+
+
 	}
 }
 
